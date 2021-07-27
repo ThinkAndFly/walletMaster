@@ -18,35 +18,43 @@ export class WalletsService {
       favorite: false,
     });
     const result = await newWallet.save();
-    console.log(result);
   }
 
-  getAllWallets() {
-    return [...this.wallets];
+  async getAllWallets() {
+    const wallets = await this.walletModel.find().exec();
+    return wallets.map((wallet) => ({
+      address: wallet.address,
+      description: wallet.description,
+      favorite: wallet.favorite,
+    }));
   }
 
-  getWallet(walletAddress: string) {
-    const wallet = this.findWallet(walletAddress);
-    return { ...wallet };
+  async  getWallet(walletAddress: string) {
+    const wallet = await this.findWallet(walletAddress);
+    return wallet;
   }
 
-  updateFavorite(walletAddress: string, favorite: boolean) {
-    const wallet = this.findWallet(walletAddress);
+  async updateFavorite(walletAddress: string, favorite: boolean) {
+    const wallet = await this.findWallet(walletAddress);
     wallet.favorite = favorite;
     return wallet;
   }
 
-  removeWallet(walletAddress: string) {
-    const index = this.wallets.indexOf(this.findWallet(walletAddress));
-    this.wallets.splice(index, 1);
-    return [...this.wallets];
+  async removeWallet(walletAddress: string) {
+    // const index = await this.wallets.indexOf(this.findWallet(walletAddress));
+    // this.wallets.splice(index, 1);
+    // return [...this.wallets];
   }
 
-  private findWallet(walletAddress: string) {
-    const wallet = this.wallets.find((w) => w.address === walletAddress);
+  private async findWallet(walletAddress: string): Promise<Wallet> {
+    const wallet = await this.walletModel.findById(walletAddress);
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
-    return wallet;
+    return {
+      address: wallet.address,
+      description: wallet.description,
+      favorite: wallet.favorite,
+    };
   }
 }

@@ -6,10 +6,10 @@ export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
   @Post()
-  addWallet(
+  async addWallet(
     @Body('address') walletAddress: string,
     @Body('description') description: string) {
-    this.walletsService.insertWallet(walletAddress, description);
+    await this.walletsService.insertWallet(walletAddress, description);
      return "wallet added successfully."
    }
 

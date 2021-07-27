@@ -9,7 +9,7 @@ import { WalletsModule } from './wallets/wallets.module';
   imports: [
     WalletsModule,
     MongooseModule.forRoot(
-      'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false'
+      'mongodb://localhost:27017/walletMaster?readPreference=primary&appname=MongoDB%20Compass&ssl=false'
     ),
   ],
   controllers: [AppController],
