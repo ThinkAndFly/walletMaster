@@ -1,11 +1,15 @@
-import { Module } from "@nestjs/common";
-import { WalletsController } from "./wallets.controller";
-import { WalletsService } from "./wallets.service";
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 
-@Module(
-    {
-        controllers: [WalletsController],
-        providers: [WalletsService],
-    }
-)
+import { WalletsController } from './wallets.controller';
+import { WalletSchema } from './wallet.model';
+import { WalletsService } from './wallets.service';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([{ name: 'Wallet', schema: WalletSchema }]),
+  ],
+  controllers: [WalletsController],
+  providers: [WalletsService],
+})
 export class WalletsModule {}
