@@ -14,26 +14,26 @@ export class WalletsController {
    }
 
    @Get()
-   getAllWallets(){
-       return this.walletsService.getAllWallets();
+   async getAllWallets(){
+       return await this.walletsService.getAllWallets();
    }
 
    @Get(':walletAddress')
-   getWallet(@Param('walletAddress') walletAddress : string){
-       return this.walletsService.getWallet(walletAddress); 
+   async getWallet(@Param('walletAddress') walletAddress : string){
+       return await this.walletsService.getWallet(walletAddress); 
    }
 
    @Patch(':walletAddress')
-   updateFavorite(
+   async updateFavorite(
        @Param('walletAddress') walletAddress : string,
        @Body('favorite') favorite : boolean)
     {
-        return this.walletsService.updateFavorite(walletAddress, favorite);
+        return await this.walletsService.updateFavorite(walletAddress, favorite);
     }
 
     @Delete(':walletAddress')
-    removeWallet(@Param('walletAddress') walletAddress : string)
+    async removeWallet(@Param('walletAddress') walletAddress : string)
     {
-        return this.walletsService.removeWallet(walletAddress);
+        return await this.walletsService.removeWallet(walletAddress);
     }
 }

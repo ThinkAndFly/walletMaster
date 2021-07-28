@@ -6,7 +6,7 @@ export const WalletSchema = new mongoose.Schema({
   favorite: { type: Boolean, required: true },
 });
 
-export interface Wallet {
+export interface Wallet extends mongoose.Document {
   address: string;
   description: string;
   favorite: boolean;

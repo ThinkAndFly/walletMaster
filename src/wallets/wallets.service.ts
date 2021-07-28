@@ -31,30 +31,33 @@ export class WalletsService {
 
   async  getWallet(walletAddress: string) {
     const wallet = await this.findWallet(walletAddress);
-    return wallet;
+    return {
+        address: wallet.address,
+        description: wallet.description,
+        favorite: wallet.favorite,
+      };
   }
 
   async updateFavorite(walletAddress: string, favorite: boolean) {
     const wallet = await this.findWallet(walletAddress);
-    wallet.favorite = favorite;
+    if(favorite !== undefined)
+        wallet.favorite = favorite;
+    await wallet.save();
     return wallet;
   }
 
   async removeWallet(walletAddress: string) {
-    // const index = await this.wallets.indexOf(this.findWallet(walletAddress));
-    // this.wallets.splice(index, 1);
-    // return [...this.wallets];
-  }
+    const result = await this.walletModel.deleteOne({address: walletAddress}).exec();
+    if(result.n === 0){
+        throw new NotFoundException('Wallet not found');
+    }
+}
 
   private async findWallet(walletAddress: string): Promise<Wallet> {
-    const wallet = await this.walletModel.findById(walletAddress);
+    const wallet = await this.walletModel.findOne({address: walletAddress}).exec();
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
-    return {
-      address: wallet.address,
-      description: wallet.description,
-      favorite: wallet.favorite,
-    };
+    return wallet;
   }
 }
