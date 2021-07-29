@@ -21,7 +21,7 @@ export class WalletsService {
     private httpService: HttpService,
   ) {}
 
-  async insertWallet(address: string, description: string) : Promise<string> {
+  async insertWallet(address: string, description: string) : Promise<boolean> {
 
     if(await this.exist(address))
     {  throw new HttpException({
@@ -43,7 +43,7 @@ export class WalletsService {
 
     const result = await newWallet.save();
 
-    return 'wallet added successfully.';
+    return true;
   }
 
   async getAllWallets() {
@@ -90,13 +90,14 @@ export class WalletsService {
     return wallet;
   }
 
-  async removeWallet(walletAddress: string) {
+  async removeWallet(walletAddress: string) : Promise<boolean>{
     const result = await this.walletModel
       .deleteOne({ address: walletAddress })
       .exec();
     if (result.n === 0) {
       throw new NotFoundException('Wallet not found');
     }
+    return true;
   }
 
   private async findWallet(walletAddress: string): Promise<Wallet> {

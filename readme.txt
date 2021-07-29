@@ -73,7 +73,7 @@ Actualiza el exchange en eur para una Billetera. Devuelve el objeto.
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-Delete
+DELETE
 pametro: 'walletAddress': string,
 
 Borra una Billetera.
