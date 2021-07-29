@@ -18,6 +18,16 @@ export class WalletsController {
        return await this.walletsService.getAllWallets();
    }
 
+   @Get('walletdate/:walletAddress')
+   async getWalletDate(@Param('walletAddress') walletAddress : string) {
+       return await this.walletsService.getWalletFirstUseWithEtherscan(walletAddress);
+   }
+
+   @Get('walletbalance/:walletAddress')
+   async getWalletBalance(@Param('walletAddress') walletAddress : string) {
+       return await this.walletsService.getWalletBalanceWithEtherscan(walletAddress);
+   }
+
    @Get(':walletAddress')
    async getWallet(@Param('walletAddress') walletAddress : string){
        return await this.walletsService.getWallet(walletAddress); 
