@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 
 @Controller('wallets')
@@ -8,42 +16,60 @@ export class WalletsController {
   @Post()
   async addWallet(
     @Body('address') walletAddress: string,
-    @Body('description') description: string) {
+    @Body('description') description: string,
+  ) {
     await this.walletsService.insertWallet(walletAddress, description);
-     return "wallet added successfully."
-   }
+    return 'wallet added successfully.';
+  }
 
-   @Get()
-   async getAllWallets(){
-       return await this.walletsService.getAllWallets();
-   }
+  @Get()
+  async getAllWallets() {
+    return await this.walletsService.getAllWallets();
+  }
 
-   @Get('walletdate/:walletAddress')
-   async getWalletDate(@Param('walletAddress') walletAddress : string) {
-       return await this.walletsService.getWalletFirstUseWithEtherscan(walletAddress);
-   }
+  @Get('walletdate/:walletAddress')
+  async getWalletDate(@Param('walletAddress') walletAddress: string) {
+    return await this.walletsService.getWalletFirstUseWithEtherscan(
+      walletAddress,
+    );
+  }
 
-   @Get('walletbalance/:walletAddress')
-   async getWalletBalance(@Param('walletAddress') walletAddress : string) {
-       return await this.walletsService.getWalletBalanceWithEtherscan(walletAddress);
-   }
+  @Get('walletbalance/:walletAddress')
+  async getWalletBalance(@Param('walletAddress') walletAddress: string) {
+    return await this.walletsService.getFullBalance(walletAddress);
+  }
 
-   @Get(':walletAddress')
-   async getWallet(@Param('walletAddress') walletAddress : string){
-       return await this.walletsService.getWallet(walletAddress); 
-   }
+  @Get('singlewallet/:walletAddress')
+  async getWallet(@Param('walletAddress') walletAddress: string) {
+    return await this.walletsService.getWallet(walletAddress);
+  }
 
-   @Patch(':walletAddress')
-   async updateFavorite(
-       @Param('walletAddress') walletAddress : string,
-       @Body('favorite') favorite : boolean)
-    {
-        return await this.walletsService.updateFavorite(walletAddress, favorite);
-    }
+  @Patch('favorite/:walletAddress')
+  async updateFavorite(
+    @Param('walletAddress') walletAddress: string,
+    @Body('favorite') favorite: boolean,
+  ) {
+    return await this.walletsService.updateFavorite(walletAddress, favorite);
+  }
 
-    @Delete(':walletAddress')
-    async removeWallet(@Param('walletAddress') walletAddress : string)
-    {
-        return await this.walletsService.removeWallet(walletAddress);
-    }
+  @Patch('usdex/:walletAddress')
+  async updateUSD(
+    @Param('walletAddress') walletAddress: string,
+    @Body('usdex') usdex: number,
+  ) {
+    return await this.walletsService.updateUSDex(walletAddress, usdex);
+  }
+
+  @Patch('eurex/:walletAddress')
+  async updateEUR(
+    @Param('walletAddress') walletAddress: string,
+    @Body('eurex') eurex: number,
+  ) {
+    return await this.walletsService.updateEURDex(walletAddress, eurex);
+  }
+
+  @Delete(':walletAddress')
+  async removeWallet(@Param('walletAddress') walletAddress: string) {
+    return await this.walletsService.removeWallet(walletAddress);
+  }
 }
