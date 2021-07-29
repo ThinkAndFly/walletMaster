@@ -3,7 +3,12 @@ import { Wallet } from './wallet.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HttpService } from '@nestjs/axios';
-import { BasicResult, WalletResult } from './walletResult.model';
+import {
+  BasicResult,
+  ExchangeDetail,
+  ExchangeResult,
+  WalletResult,
+} from './walletResult.model';
 import { AxiosResponse } from 'axios';
 
 @Injectable()
@@ -34,7 +39,7 @@ export class WalletsService {
   async getAllWallets() {
     const wallets = await this.walletModel.find().exec();
 
-    const mappedWallet = wallets.map((wallet) => (this.internalMapping(wallet)));
+    const mappedWallet = wallets.map((wallet) => this.internalMapping(wallet));
 
     for (const wallet of mappedWallet) {
       var result = await this.getWalletBalanceWithEtherscan(wallet.address);
@@ -151,6 +156,24 @@ export class WalletsService {
     return date;
   }
 
+  async getETHtoUSDfromEtherscan(): Promise<number> {
+    const url =
+      'https://api.etherscan.io/api?module=stats&action=ethprice&apikey=' +
+      this.apiKEY +
+      '';
+
+    var rate = 0;
+    const exchange = await this.httpService.get<AxiosResponse<ExchangeResult>>(
+      url,
+    );
+    await exchange.forEach((w) => {
+      const result = (w.data as unknown as ExchangeResult)?.result.ethusd;
+      rate = parseFloat(result);
+    });
+
+    return rate;
+  }
+
   private internalMapping(wallet: Wallet) {
     return {
       address: wallet.address,
@@ -162,5 +185,4 @@ export class WalletsService {
       eurEx: wallet.eurEx,
     };
   }
-
 }

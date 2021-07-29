@@ -30,3 +30,16 @@ export class BasicResult {
     message: string;
     result: string;
   }
+
+  export class ExchangeResult{
+    status: string;
+    message: string;
+    result: ExchangeDetail;
+  }
+
+  export class ExchangeDetail{
+    ethbtc: string;
+    ethbtc_timestamp: string;
+    ethusd: string;
+    ethusd_timestamp: string;
+  }

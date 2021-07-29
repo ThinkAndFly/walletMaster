@@ -72,4 +72,10 @@ export class WalletsController {
   async removeWallet(@Param('walletAddress') walletAddress: string) {
     return await this.walletsService.removeWallet(walletAddress);
   }
+
+  @Get('etherscanprice')
+  async etherScanEthPrice(){
+      return await this.walletsService.getETHtoUSDfromEtherscan();
+  }
+
 }
