@@ -21,7 +21,7 @@ POST
 pametro: 'address': string,
 pametro 'description': string
   
-Inserta una billetera con valores por defecto además de los proporcionados.
+Inserta una billetera con valores por defecto además de los proporcionados. Valida que la direccion no esté duplicada.
 Valida que la dirección sea válida usando etherScan. Obtiene la fecha de su primer consulta y la guarda en el objeto en la base de datos.
 
 -----------------------------------------------------------------------------------------------------------------------------------------

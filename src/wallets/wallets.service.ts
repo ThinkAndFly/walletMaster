@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { Wallet } from './wallet.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -21,7 +21,15 @@ export class WalletsService {
     private httpService: HttpService,
   ) {}
 
-  async insertWallet(address: string, description: string) {
+  async insertWallet(address: string, description: string) : Promise<string> {
+
+    if(await this.exist(address))
+    {  throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'This wallet already exists.',
+      }, HttpStatus.FORBIDDEN);
+    }
+
     const date = await this.getWalletFirstUseWithEtherscan(address);
 
     const newWallet = new this.walletModel({
@@ -34,6 +42,8 @@ export class WalletsService {
     });
 
     const result = await newWallet.save();
+
+    return 'wallet added successfully.';
   }
 
   async getAllWallets() {
@@ -97,6 +107,16 @@ export class WalletsService {
       throw new NotFoundException('Wallet not found');
     }
     return wallet;
+  }
+
+  private async exist(walletAddress: string): Promise<boolean> {
+    const wallet = await this.walletModel
+      .findOne({ address: walletAddress })
+      .exec();
+    if (wallet) {
+      return true;
+    }
+    return false;
   }
 
   async getFullBalance(address: string) {

@@ -18,8 +18,7 @@ export class WalletsController {
     @Body('address') walletAddress: string,
     @Body('description') description: string,
   ) {
-    await this.walletsService.insertWallet(walletAddress, description);
-    return 'wallet added successfully.';
+    return await this.walletsService.insertWallet(walletAddress, description);
   }
 
   @Get()
