@@ -5,8 +5,8 @@ export const WalletSchema = new mongoose.Schema({
   description: { type: String, required: false },
   favorite: { type: Boolean, required: true },
   firstTransaction: {type: Date, required: false},
-  usdEx: {type: Number, required: true},
-  eurEx: {type: Number, required: true}
+  usdEx: {type: String, required: true},
+  eurEx: {type: String, required: true}
 });
 
 export interface Wallet extends mongoose.Document {
@@ -14,6 +14,6 @@ export interface Wallet extends mongoose.Document {
   description: string;
   favorite: boolean;
   firstTransaction: Date;
-  usdEx: number;
-  eurEx: number;
+  usdEx: string;
+  eurEx: string;
 }

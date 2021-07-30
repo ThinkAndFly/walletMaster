@@ -37,8 +37,8 @@ export class WalletsService {
       description: description,
       favorite: false,
       firstTransaction: date ?? null,
-      usdEx: 0,
-      eurEx: 0,
+      usdEx: 1,
+      eurEx: 1,
     });
 
     const result = await newWallet.save();
@@ -76,14 +76,14 @@ export class WalletsService {
     return wallet;
   }
 
-  async updateUSDex(walletAddress: string, usdex: number) {
+  async updateUSDex(walletAddress: string, usdex: string) {
     const wallet = await this.findWallet(walletAddress);
     if (usdex !== undefined) wallet.usdEx = usdex;
     await wallet.save();
     return wallet;
   }
 
-  async updateEURDex(walletAddress: string, eurex: number) {
+  async updateEURDex(walletAddress: string, eurex: string) {
     const wallet = await this.findWallet(walletAddress);
     if (eurex !== undefined) wallet.eurEx = eurex;
     await wallet.save();
@@ -132,8 +132,8 @@ export class WalletsService {
     var result = await this.getWalletBalanceWithEtherscan(wallet.address);
     if (!isNaN(result)) {
       fullBalance.eth = result;
-      fullBalance.usd = result * wallet.usdEx;
-      fullBalance.eur = result * wallet.eurEx;
+      fullBalance.usd = result * parseFloat(wallet.usdEx);
+      fullBalance.eur = result * parseFloat(wallet.eurEx);
     }
 
     return fullBalance;

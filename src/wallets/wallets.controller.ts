@@ -54,7 +54,7 @@ export class WalletsController {
   @Patch('usdex/:walletAddress')
   async updateUSD(
     @Param('walletAddress') walletAddress: string,
-    @Body('usdex') usdex: number,
+    @Body('usdex') usdex: string,
   ) {
     return await this.walletsService.updateUSDex(walletAddress, usdex);
   }
@@ -62,7 +62,7 @@ export class WalletsController {
   @Patch('eurex/:walletAddress')
   async updateEUR(
     @Param('walletAddress') walletAddress: string,
-    @Body('eurex') eurex: number,
+    @Body('eurex') eurex: string,
   ) {
     return await this.walletsService.updateEURDex(walletAddress, eurex);
   }
