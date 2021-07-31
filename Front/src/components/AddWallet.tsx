@@ -45,7 +45,7 @@ const AddWallet: React.FC<IProps> = ({ wallets, setWallet }) => {
     }
     
     return (
-        <div>
+        <div className="border col-sm-6 p-3 offset-sm-3">
             <input
                 type="text"
                 placeholder="Address"
