@@ -9,7 +9,7 @@ const List: React.FC<IProps> = ({ wallets }) => {
     const renderList = (): JSX.Element[] => {
         return wallets.map((wallet) => {
             return (
-                <div className="col-sm-5 offset-sm-1">
+                <div className="col-sm-5 offset-sm-1 mx-auto">
                     <div className="row">
                         <div className="alert alert-danger" role="alert">
                             <FontAwesomeIcon icon={faExclamationTriangle} />
