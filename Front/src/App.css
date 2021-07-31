@@ -44,6 +44,13 @@
   margin-top: 3rem!important;
 }
 
+.AddWallet{
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  margin: 1rem auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

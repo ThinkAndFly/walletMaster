@@ -2,16 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-
-interface IProps {
-    wallets: {
-        address: string,
-        balance: string,
-        eurex: string,
-        usdex: string,
-        firstTransaction: Date
-    }[]
-}
+import { IState as IProps } from "../App"
 
 const List: React.FC<IProps> = ({ wallets }) => {
 
@@ -24,12 +15,12 @@ const List: React.FC<IProps> = ({ wallets }) => {
                         Wallet is old!
                     </div>
 
-                    <div className="col-sm p-5 bg-light rounded box-shadow border">
+                    <div className="col-sm p-4 bg-light rounded box-shadow border">
                         {wallet.eurex}
                         <FontAwesomeIcon className="position-relative float-end" icon={faEdit} />
                     </div>
 
-                    <div className="col-sm offset-sm-1 p-5 bg-light rounded box-shadow border">
+                    <div className="col-sm offset-sm-1 p-4 bg-light rounded box-shadow border">
                         <div className="row">
                             <select>
                                 <option value="eur">EUR</option>
