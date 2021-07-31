@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import List from "./components/List";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 interface IState {
   wallets: {
     address: string,
-    blanace: string,
+    balance: string,
     eurex: string,
     usdex: string,
     firstTransaction: Date
@@ -17,7 +16,13 @@ interface IState {
 
 function App() {
 
-  const [wallets, setWallet] = useState<IState["wallets"]>([])
+  const [wallets, setWallet] = useState<IState["wallets"]>([{
+    address: "123123qerwerwerwreer",
+    balance: "0.0004",
+    eurex: "0.50501",
+    usdex: "0.23423423",
+    firstTransaction: new Date()
+  }])
 
   return (
     <div className="App">
