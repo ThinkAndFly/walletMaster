@@ -3,11 +3,16 @@ import { faCheck, faExclamationTriangle, faTimes } from "@fortawesome/free-solid
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import walletModel from "../models/wallet.model";
 import { useState } from "react";
-import { useEffect } from "react";
+import axios from 'axios';
+
 
 interface IProps {
     wallet: walletModel
 }
+
+const api = axios.create({
+    baseURL: 'http://localhost:3000/wallets'
+})
 
 const WalletIsOld = (firstTransaction: Date): boolean => {
     if (!firstTransaction)
@@ -29,6 +34,7 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
     const [currentExchange, setCurrentExchange] = useState<string>(props.wallet.usdEx)
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+
         switch (e.target.value) {
             case "usd": setCurrency(e.target.value);
                 setCurrentExchange(props.wallet.usdEx);
@@ -38,7 +44,15 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
                 setCurrentExchange(props.wallet.eurEx);
                 break;
         }
+    }
 
+    const handleNewExchangeRateChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        let value = e.target.value;
+        if (parseFloat(value) || value === "0" || parseFloat(value) === 0)
+            setCurrentExchange(value);
+
+        if (!value)
+            setCurrentExchange("0");
     }
 
     const ageBlock = () => {
@@ -81,8 +95,30 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
         setEdit(false);
     }
 
-    const saveExchangeRate = () => {
-        
+    const saveExchangeRate = async () => {
+        let url: string;
+
+        switch (currency) {
+            case "usd": {
+                url = "usdex/" + props.wallet.address;
+                let resp = await api.patch(url, {
+                    usdex: currentExchange
+                });
+                if (resp.data)
+                    props.wallet.usdEx = resp.data.usdEx;
+                break;
+            }
+            case "eur":
+                url = "eurex/" + props.wallet.address;
+                let resp = await api.patch(url, {
+                    eurex: currentExchange
+                });
+                if (resp.data)
+                    props.wallet.eurEx = resp.data.eurEx;
+                break;
+        }
+
+        setEdit(false);
     }
 
     const exchangeRateBlock = () => {
@@ -101,8 +137,9 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
                         <input
                             type="text"
                             className="w-auto mx-3"
-                            name="newExchange"
+                            name="currentExchange"
                             value={currentExchange}
+                            onChange={handleNewExchangeRateChange}
                         />
                     </div>
                 </div>
