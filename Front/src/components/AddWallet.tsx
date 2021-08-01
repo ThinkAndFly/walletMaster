@@ -1,14 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import { IState as Props } from "../App"
+import walletModel from "../models/wallet.model";
+import axios from 'axios';
 
 interface IProps {
-    wallets: Props["wallets"]
-    setWallet: React.Dispatch<React.SetStateAction<Props["wallets"]>>
+    setWallets: React.Dispatch<React.SetStateAction<walletModel[]>>,
+    wallets: walletModel[]
 }
 
+const api = axios.create({
+    baseURL: 'http://localhost:3000/wallets'
+})
 
-const AddWallet: React.FC<IProps> = ({ wallets, setWallet }) => {
+
+const AddWallet: React.FC<IProps> = ({ setWallets, wallets }) => {
 
     const [input, setInput] = useState({
         address: "",
@@ -22,28 +27,39 @@ const AddWallet: React.FC<IProps> = ({ wallets, setWallet }) => {
         })
     }
 
-    const handleClick = (): void => {
+    const handleClick = async () => {
         if (
             !input.address
         ) { return }
 
-        setWallet([
-            ...wallets,
-            {
-                address: input.address,
-                description: input.description,
-                balance: "0",
-                eurex: "0",
-                usdex: "0",
-                firstTransaction: new Date()
-            }
-        ]);
+        let newWallet: walletModel = {
+            address: input.address,
+            description: input.description,
+            balance: "0",
+            eurex: "0",
+            usdex: "0",
+            favorite: false,
+            firstTransaction: new Date()
+        }
+
+        let response = await api.post('', {
+            address: newWallet.address,
+            description: newWallet.description
+        });
+
+        console.log(response.data);
+        wallets.push(response.data);
+        console.log(wallets);
+        setWallets(
+            [...wallets]
+        )
 
         setInput({
             address: "",
-            description: ""})
+            description: ""
+        })
     }
-    
+
     return (
         <div className="border col-sm-6 p-3 offset-sm-3">
             <input

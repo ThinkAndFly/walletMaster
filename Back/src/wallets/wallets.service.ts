@@ -21,7 +21,7 @@ export class WalletsService {
     private httpService: HttpService,
   ) {}
 
-  async insertWallet(address: string, description: string) : Promise<boolean> {
+  async insertWallet(address: string, description: string) {
 
     if(await this.exist(address))
     {  throw new HttpException({
@@ -43,7 +43,7 @@ export class WalletsService {
 
     const result = await newWallet.save();
 
-    return true;
+    return this.getWallet(address);
   }
 
   async getAllWallets() {
