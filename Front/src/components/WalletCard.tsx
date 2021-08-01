@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faExclamationTriangle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faExclamationTriangle, faHeart, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import walletModel from "../models/wallet.model";
 import { useState } from "react";
@@ -31,6 +31,7 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
 
     const [currency, setCurrency] = useState<string>("usd")
     const [edit, setEdit] = useState<boolean>(false)
+    const [favorite, setFavorite] = useState<boolean>(props.wallet.favorite)
     const [currentExchange, setCurrentExchange] = useState<string>(props.wallet.usdEx)
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -87,12 +88,8 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
             )
         }
     }
-    const setEditModeOn = () => {
-        setEdit(true);
-    }
-
-    const setEditModeOff = () => {
-        setEdit(false);
+    const ToggleEditModel = () => {
+        setEdit(!edit);
     }
 
     const saveExchangeRate = async () => {
@@ -121,6 +118,38 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
         setEdit(false);
     }
 
+    const favoriteBlock = () => {
+        if (favorite) {
+            return (
+                <div className="col-sm-1 favContainer">
+                    <button className="btn p-0"
+                        onClick={UpdateFavorite}
+                    ><FontAwesomeIcon className="cancelColor" icon={faHeart} /> </button>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="col-sm-1 favContainer">
+                    <button className="btn p-0"
+                        onClick={UpdateFavorite}
+                    ><FontAwesomeIcon className="grayColor" icon={faHeart} /> </button>
+                </div>
+            )
+        }
+    }
+
+    const UpdateFavorite = async () => {
+        let url = "favorite/" + props.wallet.address;
+        let resp = await api.patch(url, {
+            favorite: !favorite
+        });
+        if (resp.data) {
+            props.wallet.favorite = resp.data.favorite;
+            setFavorite(resp.data.favorite);
+        }
+    }
+
     const exchangeRateBlock = () => {
         if (edit) {
             return (
@@ -129,7 +158,7 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
                         <div className="position-relative float-end">
                             <button onClick={saveExchangeRate}
                                 className="btn w-auto position-relative float-end"><FontAwesomeIcon className="okColor" icon={faCheck} /> </button>
-                            <button onClick={setEditModeOff}
+                            <button onClick={ToggleEditModel}
                                 className="btn w-auto position-relative float-end"><FontAwesomeIcon className="cancelColor" icon={faTimes} /> </button>
                         </div>
                     </div>
@@ -150,7 +179,7 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
                 <div className="col-sm bg-light rounded box-shadow border">
                     <div className="row">
                         <div className="position-relative float-end">
-                            <button onClick={setEditModeOn}
+                            <button onClick={ToggleEditModel}
                                 className="btn w-auto position-relative float-end"><FontAwesomeIcon className="editColor" icon={faEdit} /> </button>
                         </div>
                     </div>
@@ -165,8 +194,8 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
             <div className="row">
                 {ageBlock()}
                 {exchangeRateBlock()}
-
-                <div className="col-sm offset-sm-1 p-4 bg-light rounded box-shadow border">
+                {favoriteBlock()}
+                <div className="col-sm p-4 bg-light rounded box-shadow border">
                     <div className="row">
                         <select onChange={handleChange} defaultValue="usd">
                             <option value="usd">USD</option>

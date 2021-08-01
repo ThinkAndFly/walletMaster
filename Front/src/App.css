@@ -67,6 +67,14 @@
   color: red;
 }
 
+.favContainer {
+  display: flex;
+  align-items: center;
+}
+
+.grayColor {
+  color: darkgrey;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
