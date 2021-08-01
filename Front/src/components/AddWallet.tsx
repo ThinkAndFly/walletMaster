@@ -75,7 +75,7 @@ const AddWallet: React.FC<IProps> = ({ setWallets, wallets }) => {
     const showError = () => {
         if (error)
             return (
-                <label> Check wallet address. (Duplicated or wrong format). </label>
+                <label className="alert alert-danger p-2"> Check wallet address. (Duplicated or wrong format) </label>
             )
     }
 
