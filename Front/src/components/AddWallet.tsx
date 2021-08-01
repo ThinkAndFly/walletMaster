@@ -38,8 +38,8 @@ const AddWallet: React.FC<IProps> = ({ setWallets, wallets }) => {
             address: input.address,
             description: input.description,
             balance: "0",
-            eurex: "0",
-            usdex: "0",
+            eurEx: "0",
+            usdEx: "0",
             favorite: false,
             firstTransaction: new Date()
         }

@@ -29,26 +29,42 @@
 }
 
 .Box {
-  border-radius: .25rem!important;
+  border-radius: 0.25rem !important;
   border-top-left-radius: 0.25rem !important;
   border-top-right-radius: 0.25rem !important;
   border-bottom-right-radius: 0.25rem !important;
   border-bottom-left-radius: 0.25rem !important;
-  background-color: #f8f9fa!important;
-  padding: 3rem!important;
-  border: 1px solid #dee2e6!important;
+  background-color: #f8f9fa !important;
+  padding: 3rem !important;
+  border: 1px solid #dee2e6 !important;
 }
 
-.Line{
-  margin-bottom: 3rem!important;
-  margin-top: 3rem!important;
+.Line {
+  margin-bottom: 3rem !important;
+  margin-top: 3rem !important;
 }
 
-.AddWallet{
+.AddWallet {
   display: flex;
   flex-direction: column;
   width: 80%;
   margin: 1rem auto;
+}
+
+.balanceRow {
+  text-align: left;
+}
+
+.editColor {
+  color: #38b5de;
+}
+
+.okColor {
+  color: lawngreen;
+}
+
+.cancelColor {
+  color: red;
 }
 
 @keyframes App-logo-spin {

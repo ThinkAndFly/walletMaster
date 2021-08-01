@@ -3,7 +3,7 @@ export default interface walletModel {
   description: string;
   favorite: boolean;
   balance: string;
-  eurex: string;
-  usdex: string;
+  eurEx: string;
+  usdEx: string;
   firstTransaction: Date;
 }
