@@ -20,6 +20,8 @@ const AddWallet: React.FC<IProps> = ({ setWallets, wallets }) => {
         description: ""
     })
 
+    const [error, setError] = useState<boolean>(false)
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setInput({
             ...input,
@@ -42,26 +44,44 @@ const AddWallet: React.FC<IProps> = ({ setWallets, wallets }) => {
             firstTransaction: new Date()
         }
 
-        let response = await api.post('', {
-            address: newWallet.address,
-            description: newWallet.description
-        });
+        try {
+            let response = await api.post('', {
+                address: newWallet.address,
+                description: newWallet.description
+            });
 
-        console.log(response.data);
-        wallets.push(response.data);
-        console.log(wallets);
-        setWallets(
-            [...wallets]
-        )
+            if (response.data.address) {
+                wallets.push(response.data);
+                setWallets(
+                    [...wallets]
+                )
 
-        setInput({
-            address: "",
-            description: ""
-        })
+                setInput({
+                    address: "",
+                    description: ""
+                })
+
+                setError(false);
+            }
+            else {
+                setError(true);
+            }
+        }
+        catch {
+            setError(true);
+        }
+    }
+
+    const showError = () => {
+        if (error)
+            return (
+                <label> Check wallet address. (Duplicated or wrong format). </label>
+            )
     }
 
     return (
         <div className="border col-sm-6 p-3 offset-sm-3">
+            {showError()}
             <input
                 type="text"
                 placeholder="Address"
