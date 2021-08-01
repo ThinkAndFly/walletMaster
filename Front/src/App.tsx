@@ -19,11 +19,29 @@ function App() {
     var resp: AxiosResponse<any> = await api.get('')
     setWallets(resp.data);
     setLoading(false);
+    console.log("-- Get Wallets --");
   };
 
   useEffect(() => {
     GetWallets()
   }, [])
+
+  const sortWallets = () => {
+    wallets.sort((a, b) => Number(b.favorite) - Number(a.favorite));
+    setWallets([...wallets]);
+  }
+
+  const renderWallets = () => {
+    if (wallets.length > 0) {
+      return (
+        wallets.map((item: walletModel, index: number) => {
+          return (
+            <WalletCard key={index} wallet={item} />
+          )
+        })
+      )
+    }
+  }
 
   return (
     <div className="App">
@@ -33,11 +51,7 @@ function App() {
 
       <main role="main" className="container">
         <div className="row">
-          {wallets.length > 0 && wallets.map((item: walletModel, index: number) => {
-            return (
-              <WalletCard key={index} wallet={item} />
-            )
-          })}
+          {renderWallets()}
         </div>
         <AddWallet setWallets={setWallets} wallets={wallets} />
       </main>

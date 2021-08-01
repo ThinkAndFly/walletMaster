@@ -203,7 +203,11 @@ const WalletCard: React.FC<IProps> = (props: IProps) => {
                         </select></div>
                     <div className="row balanceRow mt-3">{balanceBlock()} </div>
                 </div>
-                <hr className="mb-5 mt-5" />
+            </div>
+            <div className="row">
+                <label className="mt-2 border">{props.wallet.description}&nbsp;</label>
+                <label className="mt-2 border">{props.wallet.address}</label>
+                <hr className="mb-5 mt-3" />
             </div>
         </div>
     )

@@ -47,7 +47,7 @@ export class WalletsService {
   }
 
   async getAllWallets() {
-    const wallets = await this.walletModel.find().exec();
+    const wallets = await this.walletModel.find().sort('-favorite').exec();
 
     const mappedWallet = wallets.map((wallet) => this.internalMapping(wallet));
 
